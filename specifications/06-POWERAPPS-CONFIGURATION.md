@@ -1,415 +1,441 @@
-# PowerApps Configuration Guide
+# PowerApps Configuration Guide - Financial Module
 
-## Canvas App Architecture
+## Canvas App Architecture - Enhanced with Financial Features
 
-### App Name: CRM Management System
+### App Name: CRM Management System (Enhanced)
 **Target Device:** Tablet (responsive for mobile and web)
 
 ---
 
-## Screen Structure
+## New Financial Screens
 
-### 1. Splash/Login Screen
+### 1. Account Financial Summary Panel
 ```
-Screen: SplashScreen
-├── Background image/color
-├── App logo
-├── Welcome message
-├── Login status indicator
-```
-
----
-
-### 2. Main Dashboard
-```
-Screen: DashboardScreen
-├── Header
-│   ├── Welcome [UserName]
-│   └── Role badge (Admin/User)
-├── Quick Actions (4 tiles)
-│   ├── New Account
-│   ├── New Contact
-│   ├── View Inventory
-│   └── My Records
-├── Recent Records (3 sections)
-│   ├── Recent Accounts
-│   ├── Recent Contacts
-│   └── Pending Tasks
-└── Navigation Menu (role-based)
-    ├── Accounts
-    ├── Contacts
-    ├── Inventory
-    ├── User Admin (Admin only)
-    ├── Reports (Admin only)
-    └── Settings (Admin only)
-```
-
----
-
-### 3. Accounts Module
-
-#### Screen: Accounts List
-```
-Screen: AccountsListScreen
-├── Search/Filter Bar
-│   ├── Search box (by name)
-│   ├── Industry filter
-│   └── Status filter
-├── Gallery Control
-│   ├── Account Name (Title)
-│   ├── Industry (Subtitle)
-│   ├── Status badge
-│   └── Phone number
-├── Actions
-│   ├── New Account button
-│   ├── Refresh button
-│   └── Item selection → Detail
-└── Pagination (if >100 records)
-```
-
-**Formula for gallery:**
-```powerapps
-Search(
-  Filter(
-    Accounts,
-    Status = LookUp(sldStatus.Value),
-    If(IsBlank(txtSearchAccounts.Value), true, 
-      SearchBox in AccountName)
-  ),
-  txtSearchAccounts.Value,
-  "AccountName"
-)
-```
-
-#### Screen: Account Detail
-```
-Screen: AccountDetailScreen
-├── Header
-│   ├── Account Name
-│   ├── Status badge
-│   └── Edit/Delete buttons (if permitted)
-├── Account Information
-│   ├── Industry
-│   ├── Annual Revenue
-│   ├── Phone
-│   ├── Email
-│   ├── Website
-│   ├── Address (Street, City, State, ZIP)
-│   └── Number of Employees
-├── Related Section
-│   ├── Associated Contacts (sub-gallery)
-│   └── Related Interactions
-├── Actions
-│   ├── Edit Account
-│   ├── New Contact (add related)
-│   └── Delete Account (Admin only)
-└── Back button
-```
-
-#### Screen: Account Form (Create/Edit)
-```
-Screen: AccountFormScreen
-├── Form title (New Account / Edit Account)
-├── Form Controls
-│   ├── Account Name (required, text)
-│   ├── Industry (choice dropdown)
-│   ├── Annual Revenue (currency)
-│   ├── Phone (phone format)
-│   ├── Email (email validation)
-│   ├── Website (URL format)
-│   ├── Status (choice)
-│   ├── Address Section (expandable)
-│   │   ├── Street
-│   │   ├── City
-│   │   ├── State/Province
-│   │   ├── ZIP/Postal Code
-│   │   └── Country
-│   └── Number of Employees (whole number)
-├── Validation Messages
-│   ├── Required field warnings
-│   └── Format error messages
-└── Buttons
-    ├── Save
-    ├── Cancel
-    └── Reset (for new)
-```
-
-**Validation Rules:**
-- Account Name: Required, max 100 chars
-- Email: Valid email format
-- Phone: Numeric with hyphen separators
-- Annual Revenue: Positive currency value
-
----
-
-### 4. Contacts Module
-
-#### Screen: Contacts List
-```
-Screen: ContactsListScreen
-├── Search/Filter Bar
-│   ├── Search by name or email
-│   ├── Filter by Account
-│   ├── Filter by Status
-│   └── Filter by Job Title
-├── Gallery Control
-│   ├── Full Name
-│   ├── Company/Account
-│   ├── Job Title
-│   ├── Email
-│   └── Phone
-├── Actions
-│   ├── New Contact button
-│   └── Item → Detail view
-└── Sorting options
-```
-
-#### Screen: Contact Detail
-```
-Screen: ContactDetailScreen
-├── Header
-│   ├── Full Name
-│   ├── Title badge
-│   └── Edit/Delete buttons
-├── Contact Information
-│   ├── Email (clickable)
-│   ├── Phone (clickable for dial)
-│   ├── Mobile Phone
-│   ├── Job Title
-│   ├── Department
-│   ├── Account (linked)
-│   └── Contact Status
-├── Account Information
-│   └── Link to parent account
-├── Communication History
-│   └── Recent interactions
-└── Actions
-    ├── Call contact
-    ├── Send email
-    ├── Edit contact
-    └── Delete contact (if permitted)
-```
-
-#### Screen: Contact Form
-```
-Screen: ContactFormScreen
-├── Form title
-├── Contact Name Section
-│   ├── First Name (required)
-│   └── Last Name (required)
-├── Contact Information
-│   ├── Email (required, validated)
-│   ├── Phone
-│   ├── Mobile Phone
-│   ├── Job Title
-│   └── Department
-├── Account Lookup
-│   ├── Account selection (required)
-│   └── Linked account confirmation
-├── Status
-│   └── Active/Inactive
-└── Buttons
-    ├── Save
-    ├── Cancel
-    └── Save & New (for bulk entry)
-```
-
----
-
-### 5. Inventory Module
-
-#### Screen: Inventory Dashboard (Admin Only)
-```
-Screen: InventoryDashboardScreen
-├── KPI Cards
-│   ├── Total Items
-│   ├── Low Stock Count
-│   ├── Total Value
-│   └── Items Needing Reorder
-├── Low Stock Alert List
-│   └── Items below reorder level
-├── Top Products by Value
-│   └── Chart display
-└── Navigation to Details
-```
-
-#### Screen: Inventory List
-```
-Screen: InventoryListScreen
-├── Search/Filter Bar
-│   ├── Search by product name or code
-│   ├── Filter by category
-│   ├── Filter by status
-│   └── Sort options
-├── Gallery Control (Read-only for Users)
-│   ├── Product Name
-│   ├── Product Code
-│   ├── Category
-│   ├── Quantity On Hand
-│   ├── Status indicator
-│   └── Low stock warning (if applicable)
-├── Edit Button (Admin only)
-└── Item → Detail view
+Screen: AccountFinancialSummary
+├── Credit Information Card
+│   ├── Credit Limit (large display)
+│   ├── Current Balance (with color coding)
+│   ├── Available Credit (highlighted)
+│   └── Credit Status Badge (Good/At Risk/Suspended)
+├── Payment Information
+│   ├── Payment Terms
+│   ├── Last Payment Date
+│   ├── Days Since Last Payment
+│   └── Next Due Date (if applicable)
+├── Aging Summary
+│   ├── Current (0-30 days): Amount & %
+│   ├── 31-60 days: Amount & %
+│   ├── 61-90 days: Amount & %
+│   └── 90+ days: Amount & % (RED alert)
+├── Quick Stats
+│   ├── Total Transactions YTD
+│   ├── Total Payments YTD
+│   ├── Average Transaction Size
+│   └── Total Outstanding
+└── Action Buttons
+    ├── Record Payment
+    ├── Create Invoice
+    ├── View Transactions
+    └── Print Aging Report
 ```
 
 **Conditional Formatting:**
-- Red background: Quantity < Reorder Level
-- Yellow background: Quantity < Reorder Level + 50%
+- Available Credit < 20% of limit: YELLOW warning
+- Available Credit < 10% of limit: RED alert
+- Days Past Due > 0: RED highlight with count
+- Credit Status = Suspended: DARK RED background
 
-#### Screen: Inventory Detail
+---
+
+### 2. Transactions List Screen
 ```
-Screen: InventoryDetailScreen
-├── Product Information
-│   ├── Product Name
-│   ├── Product Code
-│   ├── Category
-│   ├── Description
-│   └── Status
-├── Stock Information
-│   ├── Quantity On Hand
-│   ├── Reorder Level
-│   ├── Unit of Measure
-│   ├── Unit Price
-│   └── Total Value (calculated)
-├── Supplier Information
-│   ├── Supplier Name
-│   ├── Supplier Contact
-│   └── Last Restocked date
-├── Stock Alert (if applicable)
-│   └── "LOW STOCK - Reorder Recommended"
+Screen: TransactionsListScreen
+├── Search/Filter Bar
+│   ├── Search by reference number
+│   ├── Date range picker
+│   ├── Filter by Transaction Type
+│   ├── Filter by Status
+│   └── Filter by Amount range
+├── Gallery Control
+│   ├── Transaction ID (Reference)
+│   ├── Date
+│   ├── Type (Invoice/Payment/Credit)
+│   ├── Amount
+│   ├── Status badge (color-coded)
+│   ├── Remaining Balance
+│   └── Days Overdue (if applicable)
+├── Summary Cards (above gallery)
+│   ├── Total Open: [Amount]
+│   ├── Total Overdue: [Amount]
+│   ├── Overdue Count: [Number]
+│   └── Total Paid This Month: [Amount]
 └── Actions
-    ├── Edit (Admin only)
-    ├── Reorder (Admin only)
-    └── Back
+    ├── New Transaction button
+    ├── New Payment button
+    └── Item → Transaction Detail
+```
+
+**Color Coding:**
+- Open: BLUE
+- Partial: YELLOW
+- Paid: GREEN
+- Overdue: RED
+- Cancelled: GRAY
+
+---
+
+### 3. Transaction Detail Screen
+```
+Screen: TransactionDetailScreen
+├── Header
+│   ├── Transaction ID / Reference
+│   ├── Type badge
+│   ├── Status badge
+│   └── Edit/Delete buttons (if permitted)
+├── Transaction Information
+│   ├── Date
+│   ├── Type
+│   ├── Amount
+│   ├── Description
+│   ├── Reference Number (Invoice/PO)
+│   └── Due Date (if invoice)
+├── Payment Information
+│   ├── Status
+│   ├── Remaining Balance
+│   ├── Total Payments Applied
+│   ├── Last Payment Date
+│   └── Payment Method (for payments)
+├── Related Payments (if invoice)
+│   └── Sub-gallery of payments applied
+├── Related Invoice (if payment)
+│   └── Link to invoice this payment covers
+└── Actions
+    ├── Record Payment (for invoices)
+    ├── Apply Payment (for payments)
+    ├── Edit
+    └── Delete (Admin only)
 ```
 
 ---
 
-### 6. User Admin Module (Admin Only)
-
-#### Screen: User Directory
+### 4. Record Payment Screen
 ```
-Screen: UserDirectoryScreen
-├── Search Bar
-│   └── Search by name, email, department
-├── Filter Options
-│   ├── Filter by Role
-│   ├── Filter by Status
-│   └── Filter by Department
-├── User Gallery
-│   ├── User Name
-│   ├── Email
-│   ├── Role (Admin/User)
-│   ├── Department
-│   ├── Status
-│   └── Last Login
-├── New User button
-└── Item → User Detail
-```
-
-#### Screen: User Detail
-```
-Screen: UserDetailScreen
-├── User Information
-│   ├── User Name
-│   ├── Email
-│   ├── Full Name
-│   ├── Department
-│   ├── Manager
-│   └── Status
-├── Role Information
-│   ├── Current Role (badge)
-│   ├── Permissions Summary
-│   └── Change Role button (Admin only)
-├── Activity Information
-│   ├── Last Login
-│   ├── Login Attempts
-│   └── Activity Log link
-├── Actions
-│   ├── Edit User
-│   ├── Change Role
-│   ├── Deactivate User
-│   └── Reset Password (future)
-└── Back button
+Screen: RecordPaymentScreen
+├── Payment Header
+│   ├── Account Name
+│   ├── Payment Date (default: today)
+│   └── Total Amount Outstanding (reference)
+├── Payment Form
+│   ├── Account (required, lookup)
+│   ├── Payment Date (required)
+│   ├── Amount (required, currency)
+│   ├── Payment Method (dropdown)
+│   │   ├── Check
+│   │   ├── Credit Card
+│   │   ├── ACH Transfer
+│   │   ├── Wire Transfer
+│   │   ├── Cash
+│   │   └── Other
+│   ├── Reference Number (check/conf number)
+│   └── Notes (optional)
+├── Auto-Payment Application
+│   ├── "Apply to:" section
+│   ├── Checkbox to auto-apply to oldest open invoices
+│   ├── OR manual selection of invoices
+│   └── Preview of application
+├── Validation
+│   ├── Amount cannot exceed outstanding
+│   ├── Required fields enforced
+│   └── Duplicate payment detection
+└── Buttons
+    ├── Record Payment
+    ├── Record & Create Another
+    ├── Cancel
+    └── Save as Draft
 ```
 
-#### Screen: User Form
+---
+
+### 5. Apply Payments Screen
 ```
-Screen: UserFormScreen
-├── User Details Section
-│   ├── User Name (required)
-│   ├── Email (required, unique validation)
-│   ├── Full Name (required)
-│   ├── Department (optional)
-│   └── Manager lookup (optional)
-├── Role Assignment
-│   ├── Role selector (Admin/User)
-│   ├── Role description
-│   └── Permissions preview
-├── Account Status
-│   └── Active/Inactive toggle
+Screen: ApplyPaymentsScreen
+├── Payment Information (read-only)
+│   ├── Payment ID
+│   ├── Date
+│   ├── Amount
+│   ├── Unapplied Balance
+│   └── Payment Method
+├── Open Invoices Gallery
+│   ├── Invoice ID
+│   ├── Date
+│   ├── Amount Due
+│   ├── Days Overdue
+│   └── Apply checkbox
+├── Application Details
+│   ├── Checkbox next to each invoice
+│   ├── Amount to apply input field (per invoice)
+│   ├── Running balance display
+│   └── Confirm application amount = payment amount
+├── Summary
+│   ├── Total to Apply: [Amount]
+│   ├── Remaining Unapplied: [Amount]
+│   └── Invoices to Apply To: [Count]
+└── Buttons
+    ├── Apply Payment
+    ├── Hold for Manual Review
+    └── Cancel
+```
+
+---
+
+### 6. Invoice Form (New)
+```
+Screen: InvoiceFormScreen
+├── Invoice Header
+│   ├── Account (required, lookup)
+│   ├── Invoice Type (choice)
+│   │   ├── Invoice
+│   │   ├── Credit Memo
+│   │   └── Debit Memo
+│   └── Form title updates based on type
+├── Invoice Details
+│   ├── Invoice Date (required, default today)
+│   ├── Due Date (required, calculated based on terms)
+│   ├── Reference Number (PO/Invoice#)
+│   ├── Description (required)
+│   └── Amount (required, currency)
+├── Payment Terms
+│   ├── Payment Terms (lookup to account default)
+│   ├── Calculated Due Date display
+│   └── Edit if different from account default
+├── Line Items (expandable section)
+│   ├── Product lookup
+│   ├── Quantity
+│   ├── Unit Price (auto-populated)
+│   ├── Line Total (calculated)
+│   └── Add/Remove Line buttons
+├── Summary Section
+│   ├── Subtotal (calculated)
+│   ├── Tax (if applicable)
+│   ├── Total Amount (calculated)
+│   └── Currency conversion (if needed)
+├── Status
+│   ├── Status dropdown (Open/Sent/Paid/Partial)
+│   └── Status-specific fields
 └── Buttons
     ├── Save
+    ├── Save & Close
+    ├── Save & Send (email integration)
     ├── Cancel
-    └── Reset Password (edit mode)
+    └── Delete (if permitted)
 ```
 
 ---
 
-## Common Controls & Patterns
-
-### Search Implementation
-```powerapps
-Search(
-  datasource,
-  SearchTerm,
-  "Column1", "Column2", "Column3"
-)
+### 7. Financial Dashboard Screen (Admin)
+```
+Screen: FinancialDashboardScreen
+├── KPI Cards (top row)
+│   ├── Total Receivables (large)
+│   ├── Overdue Amount (RED)
+│   ├── Credit Limit Utilization %
+│   └── Collections Rate %
+├── Charts Section
+│   ├── Aging Breakdown (pie chart)
+│   │   ├── Current (0-30): %
+│   │   ├── 31-60: %
+│   │   ├── 61-90: %
+│   │   └── 90+: %
+│   ├── Top 10 Overdue Accounts (bar chart)
+│   ├── Collections Trend (line chart - last 6 months)
+│   └── Payment Methods Breakdown (pie)
+├── Top Overdue Accounts Table
+│   ├── Account Name
+│   ├── Amount Overdue
+│   ├── Days Overdue
+│   ├── Credit Status
+│   └── Click to detail
+├── Credit Utilization Table
+│   ├── Top accounts by credit usage %
+│   ├── Account Name
+│   ├── Credit Limit
+│   ├── Current Balance %
+│   └── Available Credit %
+├── Quick Actions
+│   ├── Record Payment
+│   ├── Create Invoice
+│   ├── Export Aging Report
+│   └── Send Collection Letters
+└── Navigation
+    ├── Filter by date range
+    ├── Filter by sales territory/rep (if multi-user)
+    └── Export buttons
 ```
 
-### Filter Implementation
-```powerapps
-Filter(
-  datasource,
-  Status = SelectedStatus,
-  If(IsBlank(SelectedCategory), true, Category = SelectedCategory)
-)
+---
+
+### 8. Aging Report Screen
+```
+Screen: AgingReportScreen
+├── Report Header
+│   ├── "Accounts Receivable Aging Report"
+│   ├── As of Date: [Date]
+│   └── Generated: [Timestamp]
+├── Summary Section
+│   ├── Total A/R: [Amount]
+│   ├── Total Current: [Amount] [%]
+│   ├── Total 31-60: [Amount] [%]
+│   ├── Total 61-90: [Amount] [%]
+│   ├── Total 90+: [Amount] [%] ← highlighted in RED
+│   └── Days Sales Outstanding (DSO)
+├── Detailed Aging Table
+│   └── Columns:
+│       ├── Account Name
+│       ├── Invoice #
+│       ├── Invoice Date
+│       ├── Due Date
+│       ├── Original Amount
+│       ├── Paid Amount
+│       ├── Outstanding
+│       ├── Days Overdue
+│       ├── Aging Bucket
+│       └── Action (Record Payment link)
+├── Sorting & Filtering
+│   ├── Sort by: Days Overdue/Amount/Account
+│   ├── Filter by: Aging Bucket/Credit Status
+│   ├── Date range selector
+│   └── Search by account name
+└── Export Options
+    ├── Export to Excel
+    ├── Export to PDF
+    ├── Email Report
+    └── Print
 ```
 
-### Row-Level Security Check
+---
+
+## PowerApps Formulas for Financial Features
+
+### Calculate Available Credit
+```powerapps
+Credit_Limit - Current_Balance
+```
+
+### Auto-Update Credit Status
 ```powerapps
 If(
-  User().Email = RecordOwner.Email || 
-  LookUp(Users, Email = User().Email, Role) = "Admin",
+  Days_Past_Due >= 30,
+  "Suspended",
+  If(
+    Days_Past_Due >= 15,
+    "At Risk",
+    "Good Standing"
+  )
+)
+```
+
+### Calculate Days Past Due
+```powerapps
+If(
+  Current_Balance > 0 And Last_Payment_Date < Today(),
+  Days(Last_Payment_Date, Today()),
+  0
+)
+```
+
+### Calculate Current Balance
+```powerapps
+SUM(
+  Filter(
+    Transactions,
+    Account = CurrentAccount.ID And Status <> "Paid" And Status <> "Cancelled"
+  ),
+  Amount
+) - SUM(
+  Filter(
+    Payments,
+    Account = CurrentAccount.ID
+  ),
+  Amount
+)
+```
+
+### Validate Payment Amount
+```powerapps
+If(
+  PaymentAmount <= SUM(
+    Filter(
+      Transactions,
+      Account = SelectedAccount.ID And Status = "Open"
+    ),
+    Amount
+  ),
   true,
   false
 )
 ```
 
-### Edit Permission Check
-```powerapps
-If(
-  LookUp(Users, Email = User().Email, Role) = "Admin" ||
-  CurrentRecord.Owner.Email = User().Email,
-  false,  // Enable edit
-  true    // Disable edit
-)
-```
-
 ---
 
-## Navigation Flow
+## Updated Navigation Flow
 
 ```
 Login/Splash
     ↓
 Dashboard (Main)
-    ├→ Accounts List → Account Detail → Account Form
-    ├→ Contacts List → Contact Detail → Contact Form
-    ├→ Inventory List → Inventory Detail (→ Inventory Form - Admin)
+    ├→ Accounts
+    │  ├→ Accounts List
+    │  ├→ Account Detail
+    │  ├→ Account Financial Summary ← NEW
+    │  ├→ Account Form
+    │  └→ Transactions List ← NEW
+    │
+    ├→ Transactions ← NEW
+    │  ├→ Transactions List
+    │  ├→ Transaction Detail
+    │  ├→ Invoice Form ← NEW
+    │  ├→ Aging Report ← NEW
+    │  └→ Record Payment ← NEW
+    │
+    ├→ Payments ← NEW
+    │  ├→ Payments List
+    │  ├→ Payment Detail
+    │  ├→ Record Payment Form
+    │  └→ Apply Payments ← NEW
+    │
+    ├→ Contacts
+    │  ├→ Contacts List
+    │  ├→ Contact Detail
+    │  └→ Contact Form
+    │
+    ├→ Inventory
+    │  ├→ Inventory Dashboard
+    │  ├→ Inventory List
+    │  └→ Item Detail
+    │
+    ├→ Financial Dashboard ← NEW (Admin only)
+    │  ├→ Dashboard View
+    │  ├→ Aging Analysis
+    │  ├→ Credit Utilization
+    │  └→ Collection Report
+    │
     ├→ User Admin (Admin only)
-    │   ├→ User Directory → User Detail → User Form
-    │   └→ Activity Logs
+    │  ├→ User Directory
+    │  ├→ User Detail
+    │  ├→ User Form
+    │  └→ Activity Log
+    │
     └→ Settings (Admin only)
 ```
+
+---
+
+## Additional Features
+
+### Automated Workflows (Power Automate)
+- **Invoice Due Soon Alert**: Email 3 days before due date
+- **Overdue Payment Alert**: Email 1 day after due date, then weekly
+- **High Credit Usage Alert**: Alert when account reaches 80% of credit limit
+- **Payment Received Notification**: Email confirmation to account contact
+- **Credit Status Change Alert**: Notify sales/collections when status changes
 
